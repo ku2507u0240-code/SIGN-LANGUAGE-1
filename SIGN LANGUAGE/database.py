@@ -3,7 +3,12 @@ import json
 import os
 from datetime import datetime
 
-DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'signs.db')
+# Vercel's project filesystem is read-only; only /tmp is writable.
+# The VERCEL environment variable is automatically set to "1" by Vercel.
+if os.environ.get('VERCEL'):
+    DB_PATH = '/tmp/signs.db'
+else:
+    DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'signs.db')
 
 def get_db():
     conn = sqlite3.connect(DB_PATH)
